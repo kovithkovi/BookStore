@@ -1,0 +1,6 @@
+1. I have installed the tailwind css (You can get it from the website, framework guide)
+2. daisyUI (tailwind related website )
+3. react slick slider (go to documentation for installing)
+4. to use routers we have to install it ---> npm i react-router-dom
+5. we have to use BrowserRoutes in main.jsx
+6. for input error we use react-hook-form (Search in the website)
