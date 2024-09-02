@@ -1,13 +1,24 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import list from "../assets/list.json";
 import Cards from "./Cards";
+import axios from "axios";
 
 function FreeBook() {
-  const freeData = list.filter((data) => data.category === "Free");
+  const [book, setBoook] = useState([]);
+  useEffect(() => {
+    const getBook = async () => {
+      try {
+        const res = await axios.get("http://localhost:4001/book");
+        setBoook(res.data.filter((data) => data.category === "Free"));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBook();
+  }, []);
   var settings = {
     dots: true,
     infinite: false,
@@ -57,8 +68,8 @@ function FreeBook() {
         </div>
         <div className="slider-container">
           <Slider {...settings}>
-            {freeData.map((item) => (
-              <Cards item={item} key={item.id} />
+            {book.map((item) => (
+              <Cards item={item} key={item._id} />
             ))}
           </Slider>
         </div>

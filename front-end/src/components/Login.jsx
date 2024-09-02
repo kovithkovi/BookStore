@@ -1,15 +1,32 @@
 import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+    await axios
+      .post("http://localhost:4001/user/login", userInfo)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("User", JSON.stringify(res.data));
+        closeModalAndNavigate();
+        <Navigate to="/" />;
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err);
+          alert(err.response.data.message);
+        }
+      });
   };
 
   const modalRef = useRef(null); // Create a ref to access the modal

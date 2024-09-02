@@ -1,8 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import Login from "./Login";
+import { useAuth } from "../Context/AuthProvide";
+import Logout from "./Logout";
 
 function Navbar() {
+  const [authUser, setAuthUser] = useAuth();
   const [sticky, setScroll] = useState(false);
 
   useEffect(() => {
@@ -130,15 +133,19 @@ function Navbar() {
             </label>
           </div>
         </div>
-        <div className="text-center">
-          <a
-            className="px-4 py-2 border border-black text-black bg-white rounded hover:bg-black hover:text-white transition"
-            onClick={() => document.getElementById("my_modal_3").showModal()}
-          >
-            Login
-          </a>
-          <Login />
-        </div>
+        {authUser ? (
+          <Logout />
+        ) : (
+          <div className="text-center">
+            <a
+              className="px-4 py-2 border border-black text-black bg-white rounded hover:bg-black hover:text-white transition"
+              onClick={() => document.getElementById("my_modal_3").showModal()}
+            >
+              Login
+            </a>
+            <Login />
+          </div>
+        )}
       </div>
     </div>
   );

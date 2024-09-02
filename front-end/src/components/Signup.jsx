@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Login from "./Login";
-
+import axios from "axios";
 function Signup() {
   const {
     register,
@@ -10,8 +10,25 @@ function Signup() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const userInfo = {
+      fullName: data.fullName,
+      email: data.email,
+      password: data.password,
+    };
+    await axios
+      .post("http://localhost:4001/user/signup", userInfo)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("User", JSON.stringify(res.data));
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err);
+          alert(err.response.data.message);
+        }
+      });
   };
 
   return (
@@ -38,9 +55,9 @@ function Signup() {
               id="name-input"
               placeholder="Enter your name..."
               className="w-full px-3 border rounded-md outline-none py-2"
-              {...register("name", { required: "Name is required" })}
+              {...register("fullName", { required: "Name is required" })}
             />
-            {errors.name && (
+            {errors.fullName && (
               <span className="text-red-500">{errors.name.message}</span>
             )}
           </div>
